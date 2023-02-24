@@ -1,15 +1,16 @@
 package com.ashu16.rest.webservice.Basicexample.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.net.URI;
 import java.util.List;
 
-import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
 
-import org.apache.coyote.http11.Http11AprProtocol;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.http.HttpStatus;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,14 +29,18 @@ public class UserController {
 	@Autowired
 	UserDao userDao;;
 	
-	@GetMapping(path = "/getusers")
-	public List<User> getallUsers(){
+	@GetMapping("/getusers")
+	public List<User> getAllUsers(){
 		return userDao.getAllUsers();
 	}
 	
 	@GetMapping(path = "/getuser/{id}")
-	public User getallUserById(@PathVariable String id){
-		return userDao.getUser(Integer.parseInt(id));
+	public EntityModel<User> getallUserById(@PathVariable String id){
+		 User user = userDao.getUser(Integer.parseInt(id));
+		EntityModel<User> entityModel = EntityModel.of(user);
+		WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).getAllUsers());
+		entityModel.add(link.withRel("all-users"));
+		return entityModel;
 	}
 	
 	@PostMapping(path = "/saveuser", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
