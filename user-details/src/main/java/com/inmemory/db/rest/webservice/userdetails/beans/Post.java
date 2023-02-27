@@ -1,16 +1,36 @@
 package com.inmemory.db.rest.webservice.userdetails.beans;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
-/*@Entity
-@Table(name="POST")*/
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
 public class Post {
 	
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int postId;
 	
 	private String description;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
+	private UserBean user;
+	
+	
+
+	public UserBean getUser() {
+		return user;
+	}
+
+	public void setUser(UserBean user) {
+		this.user = user;
+	}
 
 	public int getPostId() {
 		return postId;

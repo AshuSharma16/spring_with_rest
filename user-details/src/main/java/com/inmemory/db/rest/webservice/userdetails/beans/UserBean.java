@@ -1,11 +1,19 @@
 package com.inmemory.db.rest.webservice.userdetails.beans;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.ManyToAny;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity()
 @Table(name = "USER_DETAILS")
@@ -21,6 +29,28 @@ public class UserBean {
 	
 	@Column(name = "birth_date")
 	private String birthDate;
+
+	@Column(name ="post")
+	@OneToMany(mappedBy = "user")
+	@JsonIgnore
+	private List<Post> post;
+	
+	
+	public UserBean(int userId, String userName, String birthDate, List<Post> post) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.birthDate = birthDate;
+		this.post = post;
+	}
+
+	public List<Post> getPost() {
+		return post;
+	}
+
+	public void setPost(List<Post> post) {
+		this.post = post;
+	}
 
 	public int getUserId() {
 		return userId;
