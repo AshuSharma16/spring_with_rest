@@ -13,15 +13,12 @@ import com.inmemory.db.rest.webservice.userdetails.service.utilty.UserNotFoundEx
 
 @Service
 public class UserDetailsService {
-	
 	@Autowired
 	private UserDetailsRepository userRepo;
 
 	public UserBean createUserResource(UserBean user) {
 		UserBean userSavedBean = userRepo.save(user);
 		return userSavedBean;
-		
-		
 	}
 	
 	public UserBean getUserById(String id) {
@@ -41,5 +38,4 @@ public class UserDetailsService {
 			throw new UserNotFoundException("User not found for given id : "+ id);
 		}
 	}
-
 }

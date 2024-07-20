@@ -54,10 +54,10 @@ public class UserDetailsController {
 	public ResponseEntity<Object> createPostForUser(@PathVariable String id , @RequestBody Post post) {
 		
 		Post createdPost = postService.createPostForUserBasdonUserId(id, post);
-
-		
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(createdPost.getPostId()).toUri();
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(createdPost.getPostId())
+				.toUri();
 		return ResponseEntity.created(location).build();
 	}
 }
